@@ -263,9 +263,9 @@ class ResearchScraper:
         # 為了加快判斷速度與節省 token，只餵入前 800 字
         preview_text = content[:800]
         
-        prompt = (f"請判斷此內容是否與主題 '{topic}' 具有研究價值？\n"
-                  f"如果是通用的行事曆、放假資訊或非相關的維基百科介紹，請回傳 REJECT。\n"
-                  f"如果是具備數據、供應鏈分析或產業趨勢的資料，請回傳 ACCEPT。\n\n"
+        prompt = (f"請判斷此內容是否與主題 '{topic}' 具有研究價值與高度相關性？\n"
+                  f"如果是通用的行事曆、放假資訊或無意義的廣告導購，請回傳 REJECT。\n"
+                  f"只要內容具備與主題相關的數據、分析、趨勢、或任何實質深度資訊，請回傳 ACCEPT。\n\n"
                   f"文字片段：\n{preview_text}")
                   
         fallback_chain = self._get_fallback_chain(prefer_flash=True)

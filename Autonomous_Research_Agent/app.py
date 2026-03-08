@@ -78,6 +78,7 @@ if st.button("🚀 開始深度研究"):
         # UI 狀態展示容器
         status_text = st.empty()
         progress_bar = st.progress(0)
+        kw_placeholder = st.empty()  # 獨立區塊用來印出子關鍵字，不受下方的 stdout 攔截影響
         
         try:
             with tempfile.TemporaryDirectory() as temp_dir:
@@ -95,9 +96,15 @@ if st.button("🚀 開始深度研究"):
                     if not queries:
                         st.error("❌ 無法生成搜尋計畫，請檢查 Gemini API 是否正常。")
                         st.stop()
+                    
+                    # 立即印出自動生成的關鍵字
+                    kw_text = "#### 📝 自動生成的子關鍵字：\n"
+                    for q in queries:
+                        kw_text += f"- {q}\n"
+                    kw_placeholder.markdown(kw_text)
                         
                     # [步驟二] 
-                    status_text.text(f"[2/3] 正在透過 Serper.dev 掃描並篩選 {len(queries)} 個關鍵字的網頁資料...")
+                    status_text.text(f"[2/3] 正在透過 Serper.dev 掃描並篩選 {len(queries)} 個關鍵字的網頁資料，請稍候...")
                     scraper = ResearchScraper(raw_data_dir=session_raw_dir)
                     scraper.run_scraping_task(queries, topic)
                     progress_bar.progress(65)
@@ -110,7 +117,7 @@ if st.button("🚀 開始深度研究"):
                     
                     txt_files = [f for f in os.listdir(session_raw_dir) if f.endswith('.txt')]
                     if not txt_files:
-                        st.error("❌ 搜尋引擎未抓取到任何符合標準的網頁內容。")
+                        st.error("❌ 搜尋引擎未抓取到任何符合標準的網頁內容（可能皆被判定為不具深度價值），請嘗試更換主題！")
                         st.stop()
                         
                     # [步驟三] 
