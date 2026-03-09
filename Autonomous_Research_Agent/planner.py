@@ -6,7 +6,7 @@ import google.generativeai as genai
 
 def generate_plan(topic: str) -> list:
     """
-    根據使用者輸入的主題，扮演資深研究主管，將主題拆解成 5 個具體的搜尋指令。
+    根據使用者輸入的主題，扮演關鍵字搜尋專家，將主題拆解成 5 個具體的搜尋指令。
     """
     # 讀取環境變數中的 API Key
     api_key = os.getenv("GEMINI_API_KEY")
@@ -47,7 +47,7 @@ def generate_plan(topic: str) -> list:
         print(f"  -> 正在嘗試使用模型: {target_model}")
         model = genai.GenerativeModel(
             model_name=target_model,
-            system_instruction="你是一位『資深研究主管』。你的任務是將使用者或團隊輸入的研究主題，拆解成 5 個具體的搜尋指令。\n\n"
+            system_instruction="你是一位『關鍵字搜尋專家』。你的任務是將使用者或團隊輸入的關鍵字，拆解成 5 個具體的搜尋指令。\n\n"
                                "規則：\n"
                                "1. 你必須只輸出一個 JSON Array 格式的結果，包含這 5 個搜尋字串。\n"
                                "2. 不要加上任何其他的問候語、解釋，或者是 Markdown 標籤 (例如 ```json)。\n"
@@ -107,3 +107,4 @@ if __name__ == "__main__":
         print(json.dumps(plan, ensure_ascii=False, indent=2))
     except Exception as e:
         print("執行發生錯誤:", e)
+
